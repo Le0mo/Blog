@@ -18,7 +18,7 @@ site:
     height: 60vh
     images:
       - https://tc.alcy.cc/q/20250908/b2d656670551cb9ea6eda7b46b6c8ec0.webp
-  icp:  豫ICP备2026007558号
+  icp: 豫ICP备2026007558号
   icp_link: https://beian.miit.gov.cn/
   pages:
     home:
@@ -113,7 +113,7 @@ umami:
   websiteId: 3f9afc6c-f0bd-4734-be15-6d053960d34d
   timezone: Asia/Shanghai
 user:
-  name: Le0mo
+  name: Text
   description: Ciallo～(∠・ω<)⌒★
   site: https://blog.Le0mo.cn
   avatar: /profile.png
