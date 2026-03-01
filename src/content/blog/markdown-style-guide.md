@@ -1,8 +1,6 @@
 ---
 title: 如何规范地写 Markdown 文档
-description: >-
-  Here is a sample of some basic Markdown syntax that can be used when writing
-  Markdown content in Astro.
+description: 以下是在Astro中编写Markdown内容时可以使用的一些基本Markdown语法的示例。
 pubDate: 2024-07-01T00:00
 image: /image/image3.png
 draft: false
