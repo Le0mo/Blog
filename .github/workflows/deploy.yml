@@ -29,13 +29,24 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Deploy via rsync
-        uses: burnett01/rsync-deployments@6.0.0
+      # ===== Deploy (替换从这里开始) =====
+
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          switches: -avzr --delete
-          path: dist/
-          remote_path: ${{ secrets.DEPLOY_PATH }}/
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_user: ${{ secrets.SSH_USER }}
-          remote_key: ${{ secrets.SSH_KEY }}
-          remote_port: ${{ secrets.SSH_PORT || 22 }}
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Add known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: SSH test
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo OK"
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avzr --delete -e "ssh -p ${{ secrets.SSH_PORT }}" dist/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/
