@@ -1,21 +1,24 @@
 ---
-title: "Markdown Style Guide"
-description: "Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro."
-pubDate: "Jul 01 2024"
+title: 如何规范地写 Markdown 文档
+description: >-
+  Here is a sample of some basic Markdown syntax that can be used when writing
+  Markdown content in Astro.
+pubDate: 2024-07-01T00:00
 image: /image/image3.png
+draft: false
+tags:
+  - Markdown
 categories:
   - Documentation
   - Examples
-tags:
-  - Markdown
 badge: Markdown
 ---
 
-Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
+以下是在Astro中编写Markdown内容时可以使用的一些基本Markdown语法的示例。
 
 ## Headings
 
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+以下HTML `<h1>`—`<h6>`元素代表六个级别的章节标题。`<h1>`是最高章节级别，而`<h6>`是最低级别。
 
 # H1
 
@@ -29,21 +32,21 @@ The following HTML `<h1>`—`<h6>` elements represent six levels of section head
 
 ###### H6
 
-## Paragraph
+## 段落
 
 Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
 
 Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
 
-## Images
+## 图像
 
-#### Syntax
+#### 句法
 
 ```markdown
 ![Alt text](./full/or/relative/path/of/image)
 ```
 
-#### Output
+#### 输出信息
 
 ![blog placeholder](/logo.png)
 
