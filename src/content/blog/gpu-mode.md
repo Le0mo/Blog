@@ -11,9 +11,10 @@ categories:
   - Documentation
 badge: ''
 ---
-###显卡直通
+##显卡直通
 
-##### 一、Grub开启硬件分组
+#### 一、Grub开启硬件分组iommu
+
 1.编辑grub配置文件
 ```bash
 #文件目录
@@ -21,10 +22,11 @@ badge: ''
 #找到这一行并把参数加进去
 GRUB_CMDLINE_LINUX_DEFAULT=“… intel_iommu=on iommu=pt …”
 ```
-    确认iommu是否开启，有输出说明开启
+2. 确认iommu是否开启，有输出说明开启
 
+```bash
     sudo dmesg | grep -e DMAR -e IOMMU
-
+```
     现代设备通常都支持IOMMU且默认开启，BIOS里的选项通常为Intel VT-d、AMD-V或者IOMMU。如果没有的话搜索一下自己的cpu和主板型号看看是否支持。
 
     获取显卡的硬件id，显卡所在group的所有设备的id都记下
@@ -72,3 +74,15 @@ GRUB_CMDLINE_LINUX_DEFAULT=“… intel_iommu=on iommu=pt …”
     nvram = [
     	"/usr/share/ovmf/x64/OVMF_CODE.fd:/usr/share/ovmf/x64/OVMF_VARS.fd"
     ]
+
+    重启电脑
+
+    记得把显示器查到核显输出的口上。
+
+    virt-manager的虚拟机页面内添加设备
+
+    PCI Host Device里找到要直通的显卡（只直通显卡，不要直通类似audio的东西，可能会43报错，安装完驱动之后再直通audio）， 然后USB hostDevice里面把鼠标键盘也直通进去。
+
+    开启win11虚拟机，下载nvidia-app安装驱动
+
+    关闭虚拟机，虚拟机设置里显卡改成none
