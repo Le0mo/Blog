@@ -5,13 +5,13 @@ pubDate: 2026-03-02T23:21
 draft: false
 tags: []
 categories: []
+badge: ''
 ---
-#显卡直通
+###显卡直通
 
-PCI passthrough via OVMF - ArchWiki
-
-需要有两个显卡。
-
+##### 一、Grub开启硬件分组
+1.编辑grub配置文件
+ /etc/default/grub
     确认iommu是否开启，有输出说明开启
 
     sudo dmesg | grep -e DMAR -e IOMMU
