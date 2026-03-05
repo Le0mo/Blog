@@ -12,8 +12,10 @@ badge: ''
 ##### 一、Grub开启硬件分组
 1.编辑grub配置文件
 ```bash
- /etc/default/grub
 #文件目录
+ /etc/default/grub
+#找到这一行并把参数加进去
+GRUB_CMDLINE_LINUX_DEFAULT=“… intel_iommu=on iommu=pt …”
 ```
     确认iommu是否开启，有输出说明开启
 
