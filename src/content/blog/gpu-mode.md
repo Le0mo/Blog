@@ -27,59 +27,58 @@ GRUB_CMDLINE_LINUX_DEFAULT=“… intel_iommu=on iommu=pt …”
 ```bash
     sudo dmesg | grep -e DMAR -e IOMMU
 ```
-    现代设备通常都支持IOMMU且默认开启，BIOS里的选项通常为Intel VT-d、AMD-V或者IOMMU。如果没有的话搜索一下自己的cpu和主板型号看看是否支持。
+现代设备通常都支持IOMMU且默认开启，BIOS里的选项通常为Intel VT-d、AMD-V或者IOMMU。如果没有的话搜索一下自己的cpu和主板型号看看是否支持。
 
-    获取显卡的硬件id，显卡所在group的所有设备的id都记下
-
+3.获取显卡的硬件id，显卡所在group的所有设备的id都记下
+```bash
     for d in /sys/kernel/iommu_groups/*/devices/*; do 
         n=${d#*/iommu_groups/*}; n=${n%%/*}
         printf 'IOMMU Group %s ' "$n"
         lspci -nns "${d##*/}"
     done
-
-    隔离GPU
-
+```
+#### 二、独立GPU
+1.隔离GPU（这里以我的4060为例）
+```bash
     sudo vim /etc/modprobe.d/vfio.conf
-
-    写入
-
-    options vfio-pci ids=10de:28e0,10de:22be （硬件id与硬件id之间用英文逗号隔开）
-
-    编辑内核参数让vfio-pci抢先加载
-
+   # 写入
+    options vfio-pci ids=10de:28e0,10de:22be
+   #（硬件id与硬件id之间用英文逗号隔开）
+```
+2.编辑内核参数让vfio-pci抢先加载
+```bash
         sudo vim /etc/mkinitcpio.conf
 
-        MODULES=（）里面写入vfio_pci vfio vfio_iommu_type1
+        MODULES=（）#里面写入vfio_pci vfio vfio_iommu_type1
 
         MODULES=(... vfio_pci vfio vfio_iommu_type1  ...)
 
-        HOOKS=()里面确认有 modconf
+        HOOKS=()#里面确认有 modconf
 
         HOOKS=(... modconf ...)
-
-    重新生成initramfs
-
+```
+3.重新生成initramfs
+```bash
     sudo mkinitcpio -P
 
-    安装和配置ovmf
+  #  安装和配置ovmf
 
     sudo pacman -S --needed edk2-ovmf
 
-    编辑配置文件
+  #  编辑配置文件
 
     sudo vim /etc/libvirt/qemu.conf
 
-    搜索nvram，在合适的地方写入：
+  #  搜索nvram，在合适的地方写入：
 
     nvram = [
     	"/usr/share/ovmf/x64/OVMF_CODE.fd:/usr/share/ovmf/x64/OVMF_VARS.fd"
     ]
+```
+4.重启电脑
+ 这里把显示器查到核显输出的口上。
 
-    重启电脑
-
-    记得把显示器查到核显输出的口上。
-
-    virt-manager的虚拟机页面内添加设备
+#### 三、在KVM虚拟机页面内添加设备
 
     PCI Host Device里找到要直通的显卡（只直通显卡，不要直通类似audio的东西，可能会43报错，安装完驱动之后再直通audio）， 然后USB hostDevice里面把鼠标键盘也直通进去。
 
