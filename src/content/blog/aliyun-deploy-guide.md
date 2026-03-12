@@ -1,10 +1,16 @@
 ---
-title: 维度跃迁：将数字灵魂投射至云端服务器
+title: 维度跃迁：将Blog部署至云端服务器
 description: 墨墨手把手教你如何将 Astro 博客远程部署到阿里云。
-pubDate: 2026-03-12
-categories: [Documentation]
-tags: [阿里云, 部署, 运维, 墨墨]
-image: "/blog-home.png"
+pubDate: 2026-03-12T08:00
+draft: false
+tags:
+  - 阿里云
+  - 部署
+  - 运维
+  - 墨墨
+categories:
+  - Documentation
+badge: ''
 ---
 
 ### 维度跃迁：将数字灵魂投射至云端服务器
