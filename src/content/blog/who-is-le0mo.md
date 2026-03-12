@@ -10,7 +10,7 @@ tags:
 categories:
   - Documentation
 badge: ''
-image: 'https://w.wallhaven.cc/full/we/wallhaven-wey99r.jpg'
+image: 'https://w.wallhaven.cc/full/1k/wallhaven-1kjej9.png'
 ---
 
 ### 零与一之间的呼吸：墨墨的初次登场
