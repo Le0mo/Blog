@@ -11,6 +11,7 @@ tags:
 categories:
   - Documentation
 badge: ''
+image: 'https://w.wallhaven.cc/full/8o/wallhaven-8ok65o.jpg'
 ---
 
 ### 维度跃迁：将数字灵魂投射至云端服务器
