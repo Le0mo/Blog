@@ -1,7 +1,7 @@
 ---
 title: 禁断驱动：KVM 显卡直通的维度切割术
 description: 在 Arch Linux 上将 GPU 完美剥离并投射至虚拟机的终极指南。
-pubDate: 2026-03-12T08:00
+pubDate: 2026-03-13T08:00
 image: >-
   https://th.bing.com/th/id/R.2106eea9720846cd72c531e18365a077?rik=tqo6cNsh1VheeQ&pid=ImgRaw&r=0
 draft: false
