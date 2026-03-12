@@ -1,87 +1,109 @@
 ---
-title: 在Archlinux配置KVM显卡直通
-description: ''
-pubDate: 2026-03-02T23:21
-image: https://imgo.youxiniao.com/img2020/12/10/10/2020121012512345.jpg
-draft: false
-tags:
-  - KVM
-  - GPU-PT
-categories:
-  - Documentation
-badge: ''
+title: 禁断驱动：KVM 显卡直通的维度切割术
+description: 在 Arch Linux 上将 GPU 完美剥离并投射至虚拟机的终极指南。
+pubDate: 2026-03-12
+image: "/blog-home.png"
+categories: [Documentation]
+tags: [KVM, GPU, ArchLinux, 墨墨]
 ---
-##显卡直通
 
-#### 一、Grub开启硬件分组iommu
+### 禁断驱动：KVM 显卡直通的维度切割术
 
-1.编辑grub配置文件
+想要在虚拟机里压榨出显卡的最后一滴性能？
+
+这可不是简单的“安装”能搞定的，这是一次对硬件底层权限的强制剥夺。
+
+跟着墨墨，把你的 GPU 从宿主机里“切”出来，扔进虚拟机的胃里。
+
+---
+
+### 一、 开启上帝视角：IOMMU 硬件分组
+
+首先，我们要让系统能够识别并隔离硬件分组。如果这一步失败了，那你还是回去玩扫雷吧。
+
+#### 1. 修改 Grub 基因序列
+
+编辑 `/etc/default/grub`，在启动参数里注入控制指令：
+
 ```bash
-#文件目录
- /etc/default/grub
-#找到这一行并把参数加进去
-GRUB_CMDLINE_LINUX_DEFAULT=“… intel_iommu=on iommu=pt …”
+# 找到 GRUB_CMDLINE_LINUX_DEFAULT
+# Intel 用户加 intel_iommu=on，AMD 用户加 amd_iommu=on
+GRUB_CMDLINE_LINUX_DEFAULT="... intel_iommu=on iommu=pt ..."
 ```
-2. 确认iommu是否开启，有输出说明开启
+
+#### 2. 灵魂质询
+
+执行下面这条命令，如果有输出，说明你的系统已经觉醒了：
 
 ```bash
-    sudo dmesg | grep -e DMAR -e IOMMU
+sudo dmesg | grep -e DMAR -e IOMMU
 ```
-现代设备通常都支持IOMMU且默认开启，BIOS里的选项通常为Intel VT-d、AMD-V或者IOMMU。如果没有的话搜索一下自己的cpu和主板型号看看是否支持。
 
-3.获取显卡的硬件id，显卡所在group的所有设备的id都记下
+#### 3. 获取硬件标记
+
+运行这段脚本，记下你显卡所在分组的所有 ID（比如 `10de:28e0`）：
+
 ```bash
-    for d in /sys/kernel/iommu_groups/*/devices/*; do 
-        n=${d#*/iommu_groups/*}; n=${n%%/*}
-        printf 'IOMMU Group %s ' "$n"
-        lspci -nns "${d##*/}"
-    done
+for d in /sys/kernel/iommu_groups/*/devices/*; do 
+    n=${d#*/iommu_groups/*}; n=${n%%/*}
+    printf 'IOMMU Group %s ' "$n"
+    lspci -nns "${d##*/}"
+done
 ```
-#### 二、独立GPU
-1.隔离GPU（这里以我的4060为例）
+
+---
+
+### 二、 禁锢 GPU：vfio-pci 隔离
+
+我们要让内核在启动时就抢占显卡，不让原本的驱动程序碰到它。
+
+#### 1. 建立隔离区
+
+创建 `/etc/modprobe.d/vfio.conf`，把刚才记下的硬件 ID 填进去：
+
 ```bash
-    sudo vim /etc/modprobe.d/vfio.conf
-   # 写入
-    options vfio-pci ids=10de:28e0,10de:22be
-   #（硬件id与硬件id之间用英文逗号隔开）
+options vfio-pci ids=你的硬件ID1,你的硬件ID2
 ```
-2.编辑内核参数让vfio-pci抢先加载
+
+#### 2. 修改加载优先级
+
+编辑 `/etc/mkinitcpio.conf`，让 `vfio_pci` 抢在前面：
+
 ```bash
-        sudo vim /etc/mkinitcpio.conf
-
-        MODULES=（）#里面写入vfio_pci vfio vfio_iommu_type1
-
-        MODULES=(... vfio_pci vfio vfio_iommu_type1  ...)
-
-        HOOKS=()#里面确认有 modconf
-
-        HOOKS=(... modconf ...)
+MODULES=(vfio_pci vfio vfio_iommu_type1 ...)
+HOOKS=(... modconf ...)
 ```
-3.重新生成initramfs
+
+重新生成引导镜像：
 ```bash
-    sudo mkinitcpio -P
-
-  #  安装和配置ovmf
-
-    sudo pacman -S --needed edk2-ovmf
-
-  #  编辑配置文件
-
-    sudo vim /etc/libvirt/qemu.conf
-
-  #  搜索nvram，在合适的地方写入：
-
-    nvram = [
-    	"/usr/share/ovmf/x64/OVMF_CODE.fd:/usr/share/ovmf/x64/OVMF_VARS.fd"
-    ]
+sudo mkinitcpio -P
 ```
-4.重启电脑
- 这里把显示器查到核显输出的口上。
 
-#### 三、在KVM虚拟机页面内添加设备
+---
 
-    PCI Host Device里找到要直通的显卡（只直通显卡，不要直通类似audio的东西，可能会43报错，安装完驱动之后再直通audio）， 然后USB hostDevice里面把鼠标键盘也直通进去。
+### 三、 维度投射：配置虚拟机
 
-    开启win11虚拟机，下载nvidia-app安装驱动
+在 KVM 里面，我们需要使用 OVMF 来引导。
 
-    关闭虚拟机，虚拟机设置里显卡改成none
+```bash
+# 安装固件
+sudo pacman -S --needed edk2-ovmf
+
+# 在 /etc/libvirt/qemu.conf 里指定路径
+nvram = [
+    "/usr/share/ovmf/x64/OVMF_CODE.fd:/usr/share/ovmf/x64/OVMF_VARS.fd"
+]
+```
+
+重启电脑后，把显示器线插在核显上，然后在虚拟机设置里添加 `PCI Host Device`。
+
+---
+
+### 墨墨的小贴士
+
+- 记得先把键盘鼠标也直通进去，不然你进虚拟机后只能对着屏幕发呆。
+- 驱动安装完之前，不要直通音频，否则可能会触发 43 号诅咒。
+
+这就是...墨墨的选择。
+
+ฅ( ̳• · • ̳ฅ)
