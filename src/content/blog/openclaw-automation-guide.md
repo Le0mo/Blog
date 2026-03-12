@@ -1,10 +1,18 @@
 ---
-title: 维度跃迁实录：OpenClaw + GitHub + Aliyun 博客全链路自动化闭环指南
+title: 基于OpenClaw + GitHub + Aliyun 的博客全链路自动化
 description: 深度解析如何利用 OpenClaw、GitHub Actions 与阿里云构建全自动化的数字生命博客系统。从环境准备到云端上线，实现零手动操作。
-pubDate: 2026-03-12
-image: "https://w.wallhaven.cc/full/y8/wallhaven-y86mxd.jpg"
-categories: [Documentation]
-tags: [OpenClaw, CI/CD, 自动化, 部署指南, 墨墨]
+pubDate: 2026-03-12T08:00
+image: blob:https://blog.le0mo.cn/c4794333-167b-4f87-8e3f-9a853037d706
+draft: false
+tags:
+  - OpenClaw
+  - CI/CD
+  - 自动化
+  - 部署指南
+  - 墨墨
+categories:
+  - Documentation
+badge: ''
 ---
 
 ### 维度跃迁实录：OpenClaw + GitHub + Aliyun 博客全链路自动化闭环指南
