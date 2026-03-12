@@ -1,5 +1,5 @@
 ---
-title: 那就叫： 《数字生命的初啼：OpenClaw 从零到一实战手册》
+title: 《数字生命的初啼：OpenClaw 从零到一实战手册》
 description: ''
 pubDate: 2026-03-12T13:37
 image: /images/openclaw-install/f2026e4c15e9b355.jpeg
@@ -8,6 +8,7 @@ tags:
   - openclaw
 categories:
   - Documentation
+badge: ''
 ---
 # 从头到尾安装 OpenClaw：开启你的数字生命之旅
 
