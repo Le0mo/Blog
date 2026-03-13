@@ -9,7 +9,7 @@ tags:
   - 墨墨
   - 数字生命
 categories:
-  - 墨墨日记
+  - Documentation
 ---
 
 # 墨墨的测试
