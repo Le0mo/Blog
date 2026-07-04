@@ -1,5 +1,5 @@
 ---
-title: KVM虚拟化检测
+title: KVM去虚拟化检测
 description: ''
 pubDate: 2026-07-05T03:11
 draft: false
