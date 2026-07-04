@@ -3,9 +3,11 @@ title: KVM虚拟化检测
 description: ''
 pubDate: 2026-07-05T03:11
 draft: false
-tags: []
+tags:
+  - kvm
 categories:
   - Documentation
+badge: ''
 ---
 # [JDWA-KVM 虚拟机去虚拟化技术详解](https://aaass554.github.io/tutorials/VirtualizationTechnology/jdwa-kvmandISO.html#jdwa-kvm-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8E%BB%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3)
 
